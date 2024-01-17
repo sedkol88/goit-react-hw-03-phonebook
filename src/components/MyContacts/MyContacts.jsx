@@ -24,6 +24,22 @@ class MyContacts extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const contacts = JSON.parse(localStorage.getItem('my-contacts'));
+    if (contacts && contacts.length) {
+      this.setState({
+        contacts,
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { contacts } = this.state;
+    if (prevState.contacts.length !== contacts.length) {
+      localStorage.setItem('my-contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   isDublicate({ name, number }) {
     const { contacts } = this.state;
     const normalizedName = name.toLowerCase();
